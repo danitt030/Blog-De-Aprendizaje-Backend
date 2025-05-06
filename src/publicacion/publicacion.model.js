@@ -1,33 +1,34 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
 
-const PublicacionSchema = new Schema({
-    titulo: {
+const PublicacionSchema = Schema({
+    tituloPublicacion: {
         type: String,
-        required: [true, "El titulo es obligatorio"]
+        required: [true, 'El titulo de la publicacion es obligatorio'],
+        maxlength: [100, "El titulo no debe superar los 100 caracteres"],
     },
-    texto: {
+    descripcionPublicacion: {
         type: String,
-        required: [true, "El texto es obligatorio"],
-        maxLength: [250, "El texto no debe exceder los 250 caracteres"]
+        required: [true, 'La descripcion de la publicacion es obligatoria'],
+        maxlength: [500, "La descripcion no debe superar los 500 caracteres"],
     },
-    categoria: {
-        type: Schema.Types.ObjectId,
-        ref: "Categoria",
-        required: [true, "La categoria es obligatoria"]
+    cursoPublicacion: {
+        type: String,
+        required: [true, 'El curso de la publicacion es obligatorio'],
+        enum: ['Practica-Supervisada', 'Tecnologia III', 'Taller III'],
     },
-    autor: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: [true, "El autor es obligatorio"]
+    fechaPublicacion: {
+        type: Date,
+        default: Date.now,
     },
-    comentarios:[ {
-        type: Schema.Types.ObjectId,
-        ref: "Comentario",
-    }],
-    
+    comentarios: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Comentario",
+        }
+    ],
 }, {
+    timestamps: true,
     versionKey: false,
-    timestamps: true
 });
 
-export default model("Publicacion", PublicacionSchema);
+export default model('Publicacion', PublicacionSchema);
