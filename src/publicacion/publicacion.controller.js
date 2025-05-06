@@ -2,8 +2,8 @@ import Publicacion from './publicacion.model.js';
 
 export const agregarPublicacion = async (req, res) => {
     try {
-        const datos = req.body; 
-        const publicacion = await Publicacion.create(datos); 
+        const datos = req.body;
+        const publicacion = await Publicacion.create(datos);
         res.status(200).json({
             message: "La publicación se ha agregado correctamente",
             publicacion,
@@ -19,7 +19,12 @@ export const agregarPublicacion = async (req, res) => {
 
 export const listarPublicaciones = async (req, res) => {
     try {
-        const publicaciones = await Publicacion.find(); 
+        const publicaciones = await Publicacion.find()
+            .populate({
+                path: "comentarios",
+                select: "contenidoComentario usuario _id",
+            });
+
         res.status(200).json({
             message: "Lista de publicaciones",
             publicaciones,
@@ -31,7 +36,7 @@ export const listarPublicaciones = async (req, res) => {
             error: err.message,
         });
     }
-}
+};
 
 export const filtrarPorCurso = async (req, res) => {
     try {
