@@ -6,6 +6,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import { dbConnection } from "./mongo.js";
 import PublicacionRoutes from "../src/publicacion/publicacion.routes.js";
+import ComentarioRoutes from "../src/comentarios/comentarios.routes.js";
 import apiLimiter from "../src/middlewares/rate-limit-validator.js";
 
 const middlewares = (app) => {
@@ -19,6 +20,7 @@ const middlewares = (app) => {
 
 const routes = (app) => {
     app.use("/blogDeAprendizajeBackend/v1/Publicacion", PublicacionRoutes);
+    app.use("/blogDeAprendizajeBackend/v1/Comentario", ComentarioRoutes);
 };
 
 const conectarDB = async () => {
