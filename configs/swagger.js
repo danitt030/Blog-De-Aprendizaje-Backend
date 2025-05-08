@@ -5,9 +5,9 @@ const options ={
     swaggerDefinition:{
         openapi:"3.0.0",
         info:{
-            title: "Gestor de ventas API",
+            title: "Blog de aprendizaje",
             version: "1.0.0",
-            description: "API de gestor de ventas sobre un supermercado",
+            description: "API de blog de aprendizaje",
             contact:{
                 name: "Daniel Tuy",
                 email: "dtuy-2023313@kinal.org.gt"
@@ -20,8 +20,8 @@ const options ={
         ]
     },
     apis:[
-        "",
-        ""
+        "./src/publicacion/publicacion.routes.js",
+        "./src/comentarios/comentarios.routes.js",
     ]
 }
 
