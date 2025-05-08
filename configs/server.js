@@ -8,6 +8,7 @@ import { dbConnection } from "./mongo.js";
 import PublicacionRoutes from "../src/publicacion/publicacion.routes.js";
 import ComentarioRoutes from "../src/comentarios/comentarios.routes.js";
 import apiLimiter from "../src/middlewares/rate-limit-validator.js";
+import { swaggerDocs, swaggerUi } from "./swagger.js";
 
 const middlewares = (app) => {
     app.use(express.urlencoded({ extended: false }));
@@ -21,6 +22,7 @@ const middlewares = (app) => {
 const routes = (app) => {
     app.use("/blogDeAprendizajeBackend/v1/Publicacion", PublicacionRoutes);
     app.use("/blogDeAprendizajeBackend/v1/Comentario", ComentarioRoutes);
+    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 };
 
 const conectarDB = async () => {
