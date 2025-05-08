@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { agregarPublicacion, listarPublicaciones, filtrarPorCurso } from "./publicacion.controller.js";
+import { agregarPublicacion, listarPublicaciones, filtrarPorCurso, filtrarPorTitulo, filtrarPorFechas } from "./publicacion.controller.js";
 
 const router = Router();
 
@@ -129,5 +129,124 @@ router.get("/listarPublicaciones", listarPublicaciones);
  *         description: Error interno del servidor.
  */
 router.get("/filtrarPorCurso", filtrarPorCurso);
+
+/**
+ * @swagger
+ * /filtrarPorTitulo:
+ *   get:
+ *     summary: Filtra publicaciones por título.
+ *     description: Este endpoint permite filtrar las publicaciones que coincidan parcial o totalmente con un título específico.
+ *     tags:
+ *       - Publicaciones
+ *     parameters:
+ *       - in: query
+ *         name: titulo
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Palabra clave para buscar en los títulos de las publicaciones.
+ *         example: "Node.js"
+ *     responses:
+ *       200:
+ *         description: Publicaciones filtradas obtenidas exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 total:
+ *                   type: integer
+ *                   example: 1
+ *                 publicaciones:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       tituloPublicacion:
+ *                         type: string
+ *                         example: "Introducción a Node.js"
+ *                       descripcionPublicacion:
+ *                         type: string
+ *                         example: "Node.js es un entorno de ejecución para JavaScript..."
+ *                       cursoPublicacion:
+ *                         type: string
+ *                         example: "Tecnología III"
+ *                       fechaPublicacion:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2025-05-06T03:16:40.649+00:00"
+ *       400:
+ *         description: Falta el parámetro 'titulo'.
+ *       500:
+ *         description: Error interno del servidor.
+ */
+router.get("/filtrarPorTitulo", filtrarPorTitulo);
+
+/**
+ * @swagger
+ * /filtrarPorFechas:
+ *   get:
+ *     summary: Filtra publicaciones por rango de fechas.
+ *     description: Este endpoint permite filtrar las publicaciones que se encuentren dentro de un rango de fechas específico.
+ *     tags:
+ *       - Publicaciones
+ *     parameters:
+ *       - in: query
+ *         name: fechaInicio
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Fecha de inicio del rango (formato YYYY-MM-DD).
+ *         example: 2025-05-01
+ *       - in: query
+ *         name: fechaFin
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Fecha de fin del rango (formato YYYY-MM-DD).
+ *         example: 2025-05-08
+ *     responses:
+ *       200:
+ *         description: Publicaciones filtradas obtenidas exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 total:
+ *                   type: integer
+ *                   example: 1
+ *                 publicaciones:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       tituloPublicacion:
+ *                         type: string
+ *                         example: "Introducción a Node.js"
+ *                       descripcionPublicacion:
+ *                         type: string
+ *                         example: "Node.js es un entorno de ejecución para JavaScript..."
+ *                       cursoPublicacion:
+ *                         type: string
+ *                         example: "Tecnología III"
+ *                       fechaPublicacion:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2025-05-06T03:16:40.649+00:00"
+ *       400:
+ *         description: Falta uno o ambos parámetros de fecha.
+ *       500:
+ *         description: Error interno del servidor.
+ */
+router.get("/filtrarPorFechas", filtrarPorFechas);
 
 export default router;
