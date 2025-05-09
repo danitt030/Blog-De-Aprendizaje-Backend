@@ -14,7 +14,7 @@ const ComentariosSchema = Schema({
     publicacion: {
         type: Schema.Types.ObjectId,
         ref: 'Publicacion',
-        required: [true, 'El ID de la publicación es obligatorio'],
+        required: true
     },
     fechaComentario: {
         type: Date,

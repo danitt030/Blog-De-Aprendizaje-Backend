@@ -3,54 +3,32 @@ import Publicacion from "../publicacion/publicacion.model.js";
 
 export const agregarComentario = async (req, res) => {
     try {
-        const { usuario, contenidoComentario } = req.body;
-
-        const { uidPublic } = req.params;
-
-        if (!uidPublic) {
-            return res.status(400).json({
-                success: false,
-                message: "El ID de la publicación es obligatorio",
-            });
-        }
-
-        if (!usuario) {
-            return res.status(400).json({
-                success: false,
-                message: "El nombre del usuario es obligatorio",
-            });
-        }
-
-        const publicacionExistente = await Publicacion.findById(uidPublic);
-
-        if (!publicacionExistente) {
-            return res.status(404).json({
-                success: false,
-                message: "La publicación especificada no existe",
-            });
-        }
+        const { usuario, contenidoComentario, publicacionId } = req.body;
 
         const nuevoComentario = new Comentario({
             usuario,
             contenidoComentario,
-            publicacion: uidPublic,
+            publicacion: publicacionId,
         });
 
         await nuevoComentario.save();
 
         await Publicacion.findByIdAndUpdate(
-            uidPublic,
+            publicacionId,
             { $push: { comentarios: nuevoComentario._id } },
             { new: true }
         );
 
-        res.status(201).json({
+        const comentarioCompleto = await Comentario.findById(nuevoComentario._id)
+            .populate('publicacion', 'tituloPublicacion');
+
+        return res.status(201).json({
             success: true,
             message: "Comentario agregado correctamente",
-            comentario: nuevoComentario,
+            comentario: comentarioCompleto,
         });
     } catch (err) {
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Error al agregar el comentario",
             error: err.message,
@@ -154,6 +132,90 @@ export const verComentariosDePublicacion = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "Error al obtener los comentarios de la publicación",
+            error: err.message,
+        });
+    }
+};
+
+export const editarPublicacion = async (req, res) => {
+    try {
+        const { publicacionId } = req.params;
+        const { tituloPublicacion, contenidoPublicacion } = req.body;
+
+        if (!tituloPublicacion || !contenidoPublicacion) {
+            return res.status(400).json({
+                success: false,
+                message: "El título y el contenido de la publicación son obligatorios",
+            });
+        }
+
+        const publicacionActualizada = await Publicacion.findByIdAndUpdate(
+            publicacionId,
+            { tituloPublicacion, contenidoPublicacion },
+            { new: true }
+        );
+
+        if (!publicacionActualizada) {
+            return res.status(404).json({
+                success: false,
+                message: "La publicación especificada no existe",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Publicación editada correctamente",
+            publicacion: publicacionActualizada,
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: "Error al editar la publicación",
+            error: err.message,
+        });
+    }
+};
+
+export const eliminarPublicacion = async (req, res) => {
+    try {
+        const { publicacionId } = req.params;
+
+        const publicacionEliminada = await Publicacion.findByIdAndDelete(publicacionId);
+
+        if (!publicacionEliminada) {
+            return res.status(404).json({
+                success: false,
+                message: "La publicación especificada no existe",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Publicación eliminada correctamente",
+            publicacion: publicacionEliminada,
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: "Error al eliminar la publicación",
+            error: err.message,
+        });
+    }
+};
+
+export const verPublicaciones = async (req, res) => {
+    try {
+        const publicaciones = await Publicacion.find().populate("comentarios", "contenidoComentario usuario _id");
+
+        res.status(200).json({
+            success: true,
+            message: "Lista de publicaciones",
+            publicaciones,
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: "Error al obtener las publicaciones",
             error: err.message,
         });
     }

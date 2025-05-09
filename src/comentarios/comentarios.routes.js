@@ -39,7 +39,7 @@ const router = Router();
  *       500:
  *         description: Error interno del servidor.
  */
-router.post("/agregarcomentarios/:uidPublic", agregarComentario);
+router.post("/agregarcomentarios", agregarComentario);
 
 /**
  * @swagger
