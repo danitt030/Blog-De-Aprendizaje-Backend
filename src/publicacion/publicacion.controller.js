@@ -19,28 +19,26 @@ export const agregarPublicacion = async (req, res) => {
 
 export const listarPublicaciones = async (req, res) => {
     try {
-        const publicaciones = await Publicacion.find()
-            .populate({
-                path: "comentarios",
-                select: "contenidoComentario usuario _id",
-            });
+        const publicaciones = await Publicacion.find().populate("comentarios");
 
-        res.status(200).json({
-            message: "Lista de publicaciones",
+        return res.status(200).json({
+            success: true,
+            message: "Publicaciones obtenidas correctamente",
             publicaciones,
         });
     } catch (err) {
         return res.status(500).json({
             success: false,
-            message: "Error al listar las publicaciones",
+            message: "Error al obtener las publicaciones",
             error: err.message,
         });
     }
 };
 
+
 export const filtrarPorCurso = async (req, res) => {
     try {
-        const { curso } = req.query;
+        const { curso } = req.body;
 
         if (!curso) {
             return res.status(400).json({
@@ -67,12 +65,12 @@ export const filtrarPorCurso = async (req, res) => {
 
 export const filtrarPorTitulo = async (req, res) => {
     try {
-        const { titulo } = req.query;
+        const { titulo } = req.body;
 
         if (!titulo) {
             return res.status(400).json({
                 success: false,
-                message: "No se encontro el titulo",
+                message: "No se encontró el título",
             });
         }
 
@@ -94,7 +92,7 @@ export const filtrarPorTitulo = async (req, res) => {
 
 export const filtrarPorFechas = async (req, res) => {
     try {
-        const { fechaInicio, fechaFin } = req.query;
+        const { fechaInicio, fechaFin } = req.body;
 
         if (!fechaInicio || !fechaFin) {
             return res.status(400).json({
@@ -104,10 +102,10 @@ export const filtrarPorFechas = async (req, res) => {
         }
 
         const fechaInicioObj = new Date(fechaInicio);
-        fechaInicioObj.setHours(0, 0, 0, 0); 
+        fechaInicioObj.setHours(0, 0, 0, 0);
 
         const fechaFinObj = new Date(fechaFin);
-        fechaFinObj.setHours(23, 59, 59, 999); 
+        fechaFinObj.setHours(23, 59, 59, 999);
 
         const publicaciones = await Publicacion.find({
             fechaPublicacion: {
