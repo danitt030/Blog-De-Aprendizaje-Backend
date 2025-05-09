@@ -7,8 +7,8 @@ const router = Router();
  * @swagger
  * /agregarPublicacion:
  *   post:
- *     summary: Agrega una nueva publicación.
- *     description: Este endpoint permite agregar una nueva publicación. Solo usuarios con el rol de administrador pueden usarlo.
+ *     summary: Agregar una nueva publicación
+ *     description: Permite agregar una nueva publicación al sistema. Solo usuarios con rol de administrador pueden usar este endpoint.
  *     tags:
  *       - Publicaciones
  *     requestBody:
@@ -20,25 +20,24 @@ const router = Router();
  *             properties:
  *               titulo:
  *                 type: string
- *                 description: Título de la publicación.
- *                 example: "Introducción a Node.js"
+ *                 description: Título de la publicación
  *               contenido:
  *                 type: string
- *                 description: Contenido de la publicación.
- *                 example: "Node.js es un entorno de ejecución para JavaScript..."
- *               cursoId:
- *                 type: integer
- *                 description: ID del curso relacionado con la publicación.
- *                 example: 1
+ *                 description: Contenido de la publicación
+ *               curso:
+ *                 type: string
+ *                 description: Curso relacionado con la publicación
+ *             required:
+ *               - titulo
+ *               - contenido
+ *               - curso
  *     responses:
  *       201:
- *         description: Publicación creada exitosamente.
+ *         description: Publicación creada exitosamente
  *       400:
- *         description: Error en los datos enviados.
+ *         description: Error en los datos enviados
  *       403:
- *         description: Acceso denegado. Solo administradores pueden usar este endpoint.
- *       500:
- *         description: Error interno del servidor.
+ *         description: No autorizado
  */
 router.post("/agregarPublicacion", agregarPublicacion);
 
@@ -46,38 +45,15 @@ router.post("/agregarPublicacion", agregarPublicacion);
  * @swagger
  * /listarPublicaciones:
  *   get:
- *     summary: Lista todas las publicaciones.
- *     description: Este endpoint devuelve una lista de todas las publicaciones disponibles.
+ *     summary: Listar todas las publicaciones
+ *     description: Devuelve una lista de todas las publicaciones disponibles.
  *     tags:
  *       - Publicaciones
  *     responses:
  *       200:
- *         description: Lista de publicaciones obtenida exitosamente.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                     description: ID de la publicación.
- *                     example: 1
- *                   titulo:
- *                     type: string
- *                     description: Título de la publicación.
- *                     example: "Introducción a Node.js"
- *                   contenido:
- *                     type: string
- *                     description: Contenido de la publicación.
- *                     example: "Node.js es un entorno de ejecución para JavaScript..."
- *                   cursoId:
- *                     type: integer
- *                     description: ID del curso relacionado.
- *                     example: 1
+ *         description: Lista de publicaciones obtenida exitosamente
  *       500:
- *         description: Error interno del servidor.
+ *         description: Error interno del servidor
  */
 router.get("/listarPublicaciones", listarPublicaciones);
 
@@ -85,48 +61,22 @@ router.get("/listarPublicaciones", listarPublicaciones);
  * @swagger
  * /filtrarPorCurso:
  *   get:
- *     summary: Filtra publicaciones por curso.
- *     description: Este endpoint permite filtrar las publicaciones relacionadas con un curso específico.
+ *     summary: Filtrar publicaciones por curso
+ *     description: Devuelve las publicaciones relacionadas con un curso específico.
  *     tags:
  *       - Publicaciones
  *     parameters:
  *       - in: query
- *         name: cursoId
+ *         name: curso
  *         required: true
  *         schema:
- *           type: integer
- *         description: ID del curso para filtrar las publicaciones.
- *         example: 1
+ *           type: string
+ *         description: Nombre del curso para filtrar
  *     responses:
  *       200:
- *         description: Publicaciones filtradas obtenidas exitosamente.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                     description: ID de la publicación.
- *                     example: 1
- *                   titulo:
- *                     type: string
- *                     description: Título de la publicación.
- *                     example: "Introducción a Node.js"
- *                   contenido:
- *                     type: string
- *                     description: Contenido de la publicación.
- *                     example: "Node.js es un entorno de ejecución para JavaScript..."
- *                   cursoId:
- *                     type: integer
- *                     description: ID del curso relacionado.
- *                     example: 1
+ *         description: Publicaciones filtradas exitosamente
  *       400:
- *         description: Falta el parámetro cursoId o es inválido.
- *       500:
- *         description: Error interno del servidor.
+ *         description: Parámetro de curso faltante o inválido
  */
 router.get("/filtrarPorCurso", filtrarPorCurso);
 
@@ -134,8 +84,8 @@ router.get("/filtrarPorCurso", filtrarPorCurso);
  * @swagger
  * /filtrarPorTitulo:
  *   get:
- *     summary: Filtra publicaciones por título.
- *     description: Este endpoint permite filtrar las publicaciones que coincidan parcial o totalmente con un título específico.
+ *     summary: Filtrar publicaciones por título
+ *     description: Devuelve las publicaciones que coinciden con un título específico.
  *     tags:
  *       - Publicaciones
  *     parameters:
@@ -144,44 +94,12 @@ router.get("/filtrarPorCurso", filtrarPorCurso);
  *         required: true
  *         schema:
  *           type: string
- *         description: Palabra clave para buscar en los títulos de las publicaciones.
- *         example: "Node.js"
+ *         description: Título para filtrar
  *     responses:
  *       200:
- *         description: Publicaciones filtradas obtenidas exitosamente.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: true
- *                 total:
- *                   type: integer
- *                   example: 1
- *                 publicaciones:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       tituloPublicacion:
- *                         type: string
- *                         example: "Introducción a Node.js"
- *                       descripcionPublicacion:
- *                         type: string
- *                         example: "Node.js es un entorno de ejecución para JavaScript..."
- *                       cursoPublicacion:
- *                         type: string
- *                         example: "Tecnología III"
- *                       fechaPublicacion:
- *                         type: string
- *                         format: date-time
- *                         example: "2025-05-06T03:16:40.649+00:00"
+ *         description: Publicaciones filtradas exitosamente
  *       400:
- *         description: Falta el parámetro 'titulo'.
- *       500:
- *         description: Error interno del servidor.
+ *         description: Parámetro de título faltante o inválido
  */
 router.get("/filtrarPorTitulo", filtrarPorTitulo);
 
@@ -189,8 +107,8 @@ router.get("/filtrarPorTitulo", filtrarPorTitulo);
  * @swagger
  * /filtrarPorFechas:
  *   get:
- *     summary: Filtra publicaciones por rango de fechas.
- *     description: Este endpoint permite filtrar las publicaciones que se encuentren dentro de un rango de fechas específico.
+ *     summary: Filtrar publicaciones por rango de fechas
+ *     description: Devuelve las publicaciones dentro de un rango de fechas específico.
  *     tags:
  *       - Publicaciones
  *     parameters:
@@ -200,52 +118,19 @@ router.get("/filtrarPorTitulo", filtrarPorTitulo);
  *         schema:
  *           type: string
  *           format: date
- *         description: Fecha de inicio del rango (formato YYYY-MM-DD).
- *         example: 2025-05-01
+ *         description: Fecha de inicio del rango (YYYY-MM-DD)
  *       - in: query
  *         name: fechaFin
  *         required: true
  *         schema:
  *           type: string
  *           format: date
- *         description: Fecha de fin del rango (formato YYYY-MM-DD).
- *         example: 2025-05-08
+ *         description: Fecha de fin del rango (YYYY-MM-DD)
  *     responses:
  *       200:
- *         description: Publicaciones filtradas obtenidas exitosamente.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: true
- *                 total:
- *                   type: integer
- *                   example: 1
- *                 publicaciones:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       tituloPublicacion:
- *                         type: string
- *                         example: "Introducción a Node.js"
- *                       descripcionPublicacion:
- *                         type: string
- *                         example: "Node.js es un entorno de ejecución para JavaScript..."
- *                       cursoPublicacion:
- *                         type: string
- *                         example: "Tecnología III"
- *                       fechaPublicacion:
- *                         type: string
- *                         format: date-time
- *                         example: "2025-05-06T03:16:40.649+00:00"
+ *         description: Publicaciones filtradas exitosamente
  *       400:
- *         description: Falta uno o ambos parámetros de fecha.
- *       500:
- *         description: Error interno del servidor.
+ *         description: Parámetros de fecha faltantes o inválidos
  */
 router.get("/filtrarPorFechas", filtrarPorFechas);
 

@@ -5,19 +5,12 @@ const router = Router();
 
 /**
  * @swagger
- * /agregarcomentarios/{uidPublic}:
+ * /agregarcomentarios:
  *   post:
- *     summary: Agrega un nuevo comentario a una publicación.
- *     description: Este endpoint permite agregar un comentario a una publicación específica. Solo usuarios autenticados pueden usarlo.
+ *     summary: Agregar un nuevo comentario
+ *     description: Permite agregar un comentario a una publicación específica. Cualquier usuario autenticado puede usar este endpoint.
  *     tags:
  *       - Comentarios
- *     parameters:
- *       - in: path
- *         name: uidPublic
- *         required: true
- *         schema:
- *           type: string
- *         description: UID de la publicación a la que se agregará el comentario.
  *     requestBody:
  *       required: true
  *       content:
@@ -27,17 +20,18 @@ const router = Router();
  *             properties:
  *               contenido:
  *                 type: string
- *                 description: Contenido del comentario.
- *                 example: "Este es un comentario de prueba."
+ *                 description: Contenido del comentario
+ *               uidPublic:
+ *                 type: string
+ *                 description: ID de la publicación a la que pertenece el comentario
+ *             required:
+ *               - contenido
+ *               - uidPublic
  *     responses:
  *       201:
- *         description: Comentario agregado exitosamente.
+ *         description: Comentario agregado exitosamente
  *       400:
- *         description: Error en los datos enviados.
- *       401:
- *         description: Usuario no autenticado.
- *       500:
- *         description: Error interno del servidor.
+ *         description: Error en los datos enviados
  */
 router.post("/agregarcomentarios", agregarComentario);
 
@@ -45,8 +39,8 @@ router.post("/agregarcomentarios", agregarComentario);
  * @swagger
  * /editarcomentarios/{comentarioId}:
  *   put:
- *     summary: Edita un comentario existente.
- *     description: Este endpoint permite editar un comentario específico. Solo el autor del comentario o un administrador puede usarlo.
+ *     summary: Editar un comentario existente
+ *     description: Permite a un usuario editar su propio comentario. Requiere autenticación.
  *     tags:
  *       - Comentarios
  *     parameters:
@@ -55,7 +49,7 @@ router.post("/agregarcomentarios", agregarComentario);
  *         required: true
  *         schema:
  *           type: string
- *         description: ID del comentario a editar.
+ *         description: ID del comentario a editar
  *     requestBody:
  *       required: true
  *       content:
@@ -65,21 +59,16 @@ router.post("/agregarcomentarios", agregarComentario);
  *             properties:
  *               contenido:
  *                 type: string
- *                 description: Nuevo contenido del comentario.
- *                 example: "Este es el comentario editado."
+ *                 description: Nuevo contenido del comentario
+ *             required:
+ *               - contenido
  *     responses:
  *       200:
- *         description: Comentario editado exitosamente.
+ *         description: Comentario editado exitosamente
  *       400:
- *         description: Error en los datos enviados.
- *       401:
- *         description: Usuario no autenticado.
+ *         description: Error en los datos enviados
  *       403:
- *         description: Acceso denegado. Solo el autor o un administrador puede editar el comentario.
- *       404:
- *         description: Comentario no encontrado.
- *       500:
- *         description: Error interno del servidor.
+ *         description: No autorizado para editar este comentario
  */
 router.put("/editarcomentarios/:comentarioId", editarComentario);
 
@@ -87,8 +76,8 @@ router.put("/editarcomentarios/:comentarioId", editarComentario);
  * @swagger
  * /eliminarcomentarios/{comentarioId}:
  *   delete:
- *     summary: Elimina un comentario.
- *     description: Este endpoint permite eliminar un comentario específico. Solo el autor del comentario o un administrador puede usarlo.
+ *     summary: Eliminar un comentario
+ *     description: Permite a un usuario eliminar su propio comentario. Requiere autenticación.
  *     tags:
  *       - Comentarios
  *     parameters:
@@ -97,18 +86,14 @@ router.put("/editarcomentarios/:comentarioId", editarComentario);
  *         required: true
  *         schema:
  *           type: string
- *         description: ID del comentario a eliminar.
+ *         description: ID del comentario a eliminar
  *     responses:
  *       200:
- *         description: Comentario eliminado exitosamente.
- *       401:
- *         description: Usuario no autenticado.
+ *         description: Comentario eliminado exitosamente
  *       403:
- *         description: Acceso denegado. Solo el autor o un administrador puede eliminar el comentario.
+ *         description: No autorizado para eliminar este comentario
  *       404:
- *         description: Comentario no encontrado.
- *       500:
- *         description: Error interno del servidor.
+ *         description: Comentario no encontrado
  */
 router.delete("/eliminarcomentarios/:comentarioId", eliminarComentario);
 
@@ -116,8 +101,8 @@ router.delete("/eliminarcomentarios/:comentarioId", eliminarComentario);
  * @swagger
  * /comentariosPublicacion/{uidPublic}:
  *   get:
- *     summary: Obtiene los comentarios de una publicación.
- *     description: Este endpoint devuelve todos los comentarios asociados a una publicación específica.
+ *     summary: Ver comentarios de una publicación
+ *     description: Devuelve todos los comentarios asociados a una publicación específica.
  *     tags:
  *       - Comentarios
  *     parameters:
@@ -126,38 +111,12 @@ router.delete("/eliminarcomentarios/:comentarioId", eliminarComentario);
  *         required: true
  *         schema:
  *           type: string
- *         description: UID de la publicación cuyos comentarios se desean obtener.
+ *         description: ID de la publicación
  *     responses:
  *       200:
- *         description: Lista de comentarios obtenida exitosamente.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                     description: ID del comentario.
- *                     example: "12345"
- *                   contenido:
- *                     type: string
- *                     description: Contenido del comentario.
- *                     example: "Este es un comentario de prueba."
- *                   autor:
- *                     type: string
- *                     description: Autor del comentario.
- *                     example: "Usuario123"
- *                   fecha:
- *                     type: string
- *                     format: date-time
- *                     description: Fecha de creación del comentario.
- *                     example: "2025-05-08T12:34:56Z"
+ *         description: Lista de comentarios obtenida exitosamente
  *       404:
- *         description: Publicación no encontrada.
- *       500:
- *         description: Error interno del servidor.
+ *         description: Publicación no encontrada
  */
 router.get("/comentariosPublicacion/:uidPublic", verComentariosDePublicacion);
 
