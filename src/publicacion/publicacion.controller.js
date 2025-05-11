@@ -35,10 +35,43 @@ export const listarPublicaciones = async (req, res) => {
     }
 };
 
+export const listarPublicacionesID = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).json({
+                success: false,
+                message: "El ID de la publicación es obligatorio",
+            });
+        }
+
+        const publicacion = await Publicacion.findById(id).populate("comentarios");
+
+        if (!publicacion) {
+            return res.status(404).json({
+                success: false,
+                message: "No se encontró la publicación con el ID proporcionado",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Publicación obtenida correctamente",
+            publicacion,
+        });
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: "Error al obtener la publicación",
+            error: err.message,
+        });
+    }
+};
 
 export const filtrarPorCurso = async (req, res) => {
     try {
-        const { curso } = req.body;
+        const { curso } = req.query;
 
         if (!curso) {
             return res.status(400).json({
@@ -47,7 +80,7 @@ export const filtrarPorCurso = async (req, res) => {
             });
         }
 
-        const publicaciones = await Publicacion.find({ cursoPublicacion: curso });
+        const publicaciones = await Publicacion.find({ cursoPublicacion: curso }).populate("comentarios");
 
         return res.status(200).json({
             success: true,
@@ -65,7 +98,7 @@ export const filtrarPorCurso = async (req, res) => {
 
 export const filtrarPorTitulo = async (req, res) => {
     try {
-        const { titulo } = req.body;
+        const { titulo } = req.query;
 
         if (!titulo) {
             return res.status(400).json({
@@ -74,7 +107,8 @@ export const filtrarPorTitulo = async (req, res) => {
             });
         }
 
-        const publicaciones = await Publicacion.find({ tituloPublicacion: { $regex: titulo, $options: "i" } });
+        const publicaciones = await Publicacion.find({ tituloPublicacion: { $regex: titulo, $options: "i" } })
+            .populate("comentarios");
 
         return res.status(200).json({
             success: true,
@@ -92,7 +126,7 @@ export const filtrarPorTitulo = async (req, res) => {
 
 export const filtrarPorFechas = async (req, res) => {
     try {
-        const { fechaInicio, fechaFin } = req.body;
+        const { fechaInicio, fechaFin } = req.query;
 
         if (!fechaInicio || !fechaFin) {
             return res.status(400).json({
@@ -112,7 +146,7 @@ export const filtrarPorFechas = async (req, res) => {
                 $gte: fechaInicioObj,
                 $lte: fechaFinObj,
             },
-        });
+        }).populate("comentarios");
 
         return res.status(200).json({
             success: true,
