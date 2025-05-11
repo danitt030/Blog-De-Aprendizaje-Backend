@@ -1,0 +1,57 @@
+[{
+  "_id": {
+    "$oid": "68203b57554a7dee4fdc7dae"
+  },
+  "usuario": "Daniel Tuy",
+  "contenidoComentario": "Esta interesante este curso",
+  "publicacion": {
+    "$oid": "68203a20554a7dee4fdc7d9f"
+  },
+  "fechaComentario": {
+    "$date": "2025-05-11T05:53:27.981Z"
+  },
+  "createdAt": {
+    "$date": "2025-05-11T05:53:27.981Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T05:53:27.981Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68203b77554a7dee4fdc7db8"
+  },
+  "usuario": "Jorge Aceituno",
+  "contenidoComentario": "Me cuesta Node",
+  "publicacion": {
+    "$oid": "68203abd554a7dee4fdc7da1"
+  },
+  "fechaComentario": {
+    "$date": "2025-05-11T05:53:59.928Z"
+  },
+  "createdAt": {
+    "$date": "2025-05-11T05:53:59.929Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T05:53:59.929Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68203b94554a7dee4fdc7dc2"
+  },
+  "usuario": "Omar Castillo",
+  "contenidoComentario": "No sabia que habia proyecto BIM",
+  "publicacion": {
+    "$oid": "68203aea554a7dee4fdc7da3"
+  },
+  "fechaComentario": {
+    "$date": "2025-05-11T05:54:28.296Z"
+  },
+  "createdAt": {
+    "$date": "2025-05-11T05:54:28.296Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T05:54:28.296Z"
+  }
+}]

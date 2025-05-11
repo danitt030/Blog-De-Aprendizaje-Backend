@@ -1,0 +1,371 @@
+{
+	"info": {
+		"_postman_id": "2f86fd62-e41c-4b7d-885b-02a274f8ad2e",
+		"name": "Blog de aprendizaje",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37636976"
+	},
+	"item": [
+		{
+			"name": "Publicacion",
+			"item": [
+				{
+					"name": "agregarPublicacion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tituloPublicacion\": \"Entrega proyecto taller BIM II\",\r\n  \"descripcionPublicacion\": \"Dia final para la entrega dia viernes 9 de mayo\",\r\n  \"cursoPublicacion\": \"Taller III\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3002/blogDeAprendizajeBackend/v1/Publicacion/agregarPublicacion",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3002",
+							"path": [
+								"blogDeAprendizajeBackend",
+								"v1",
+								"Publicacion",
+								"agregarPublicacion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListarPublicaciones",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3002/blogDeAprendizajeBackend/v1/Publicacion/listarPublicaciones",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3002",
+							"path": [
+								"blogDeAprendizajeBackend",
+								"v1",
+								"Publicacion",
+								"listarPublicaciones"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListarPublicacionesID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3002/blogDeAprendizajeBackend/v1/Publicacion/listarPublicaciones/68203a20554a7dee4fdc7d9f",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3002",
+							"path": [
+								"blogDeAprendizajeBackend",
+								"v1",
+								"Publicacion",
+								"listarPublicaciones",
+								"68203a20554a7dee4fdc7d9f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FiltrarPorCurso",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3002/blogDeAprendizajeBackend/v1/Publicacion/filtrarPorCurso?curso=Taller III",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3002",
+							"path": [
+								"blogDeAprendizajeBackend",
+								"v1",
+								"Publicacion",
+								"filtrarPorCurso"
+							],
+							"query": [
+								{
+									"key": "curso",
+									"value": "Taller III"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FiltrarPorTitulo",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2RhZjAxMDU3OWMwMGRlZjQyYmVhZjUiLCJlbWFpbCI6ImJyYXVAZ21haWwuY29tIiwiaWF0IjoxNzQyNDAxNjM5LCJleHAiOjE3NDI0MzA0Mzl9.tKJgmXVkFBUu0cg9pGrQyYXdP8eqAwg0JWaaHDXwtq4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3002/blogDeAprendizajeBackend/v1/Publicacion/filtrarPorTitulo?titulo=Proyecto Final de Tecnología III",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3002",
+							"path": [
+								"blogDeAprendizajeBackend",
+								"v1",
+								"Publicacion",
+								"filtrarPorTitulo"
+							],
+							"query": [
+								{
+									"key": "titulo",
+									"value": "Proyecto Final de Tecnología III"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FiltrarPorFecha",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2RhZjAxMDU3OWMwMGRlZjQyYmVhZjUiLCJlbWFpbCI6ImJyYXVAZ21haWwuY29tIiwiaWF0IjoxNzQyNDAxNjM5LCJleHAiOjE3NDI0MzA0Mzl9.tKJgmXVkFBUu0cg9pGrQyYXdP8eqAwg0JWaaHDXwtq4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3002/blogDeAprendizajeBackend/v1/Publicacion/filtrarPorFechas?fechaInicio=2025-05-11&fechaFin=2025-05-11",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3002",
+							"path": [
+								"blogDeAprendizajeBackend",
+								"v1",
+								"Publicacion",
+								"filtrarPorFechas"
+							],
+							"query": [
+								{
+									"key": "fechaInicio",
+									"value": "2025-05-11"
+								},
+								{
+									"key": "fechaFin",
+									"value": "2025-05-11"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comentario",
+			"item": [
+				{
+					"name": "agregarComentario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usuario\": \"Daniel Andres\",\r\n    \"contenidoComentario\": \"Este blog personal esta dando mucha batalla\",\r\n    \"publicacionId\": \"68203a20554a7dee4fdc7d9f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3002/blogDeAprendizajeBackend/v1/Comentario/agregarcomentarios",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3002",
+							"path": [
+								"blogDeAprendizajeBackend",
+								"v1",
+								"Comentario",
+								"agregarcomentarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editarComentario",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"contenidoComentario\": \"REMONTAMOS\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3002/blogDeAprendizajeBackend/v1/Comentario/editarcomentarios/68203b77554a7dee4fdc7db8",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3002",
+							"path": [
+								"blogDeAprendizajeBackend",
+								"v1",
+								"Comentario",
+								"editarcomentarios",
+								"68203b77554a7dee4fdc7db8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Comentario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3002/blogDeAprendizajeBackend/v1/Comentario/eliminarcomentarios/68203b77554a7dee4fdc7db8",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3002",
+							"path": [
+								"blogDeAprendizajeBackend",
+								"v1",
+								"Comentario",
+								"eliminarcomentarios",
+								"68203b77554a7dee4fdc7db8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "comentariosPublicacion",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3002/blogDeAprendizajeBackend/v1/Comentario/comentariosPublicacion/68203a20554a7dee4fdc7d9f",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3002",
+							"path": [
+								"blogDeAprendizajeBackend",
+								"v1",
+								"Comentario",
+								"comentariosPublicacion",
+								"68203a20554a7dee4fdc7d9f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
