@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { agregarPublicacion, listarPublicaciones, filtrarPorCurso, filtrarPorTitulo, filtrarPorFechas } from "./publicacion.controller.js";
+import { agregarPublicacion, listarPublicaciones, listarPublicacionesID, filtrarPorCurso, filtrarPorTitulo, filtrarPorFechas } from "./publicacion.controller.js";
 
 const router = Router();
 
@@ -8,7 +8,7 @@ const router = Router();
  * /agregarPublicacion:
  *   post:
  *     summary: Agregar una nueva publicación
- *     description: Permite agregar una nueva publicación al sistema. Solo usuarios con rol de administrador pueden usar este endpoint.
+ *     description: Permite a un usuario autenticado agregar una publicación.
  *     tags:
  *       - Publicaciones
  *     requestBody:
@@ -26,18 +26,26 @@ const router = Router();
  *                 description: Contenido de la publicación
  *               curso:
  *                 type: string
- *                 description: Curso relacionado con la publicación
+ *                 description: Curso relacionado
  *             required:
  *               - titulo
  *               - contenido
  *               - curso
+ *           example:
+ *             titulo: "Mi publicación"
+ *             contenido: "Este es el contenido de la publicación."
+ *             curso: "Matemáticas"
  *     responses:
  *       201:
- *         description: Publicación creada exitosamente
+ *         description: Publicación agregada exitosamente
  *       400:
- *         description: Error en los datos enviados
- *       403:
- *         description: No autorizado
+ *         description: Datos inválidos o faltantes
+ *       401:
+ *         description: No autorizado. Se requiere autenticación
+ *     security:
+ *       - bearerAuth: []
+ *     x-roles:
+ *       - Usuario
  */
 router.post("/agregarPublicacion", agregarPublicacion);
 
@@ -46,23 +54,56 @@ router.post("/agregarPublicacion", agregarPublicacion);
  * /listarPublicaciones:
  *   get:
  *     summary: Listar todas las publicaciones
- *     description: Devuelve una lista de todas las publicaciones disponibles.
+ *     description: Obtiene una lista de todas las publicaciones disponibles.
  *     tags:
  *       - Publicaciones
  *     responses:
  *       200:
  *         description: Lista de publicaciones obtenida exitosamente
- *       500:
- *         description: Error interno del servidor
+ *       401:
+ *         description: No autorizado
+ *     security:
+ *       - bearerAuth: []
+ *     x-roles:
+ *       - Usuario
+ *       - Administrador
  */
 router.get("/listarPublicaciones", listarPublicaciones);
+
+/**
+ * @swagger
+ * /listarPublicaciones/{id}:
+ *   get:
+ *     summary: Obtener publicación por ID
+ *     description: Obtiene una publicación específica por su ID.
+ *     tags:
+ *       - Publicaciones
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID de la publicación
+ *     responses:
+ *       200:
+ *         description: Publicación encontrada exitosamente
+ *       404:
+ *         description: Publicación no encontrada
+ *     security:
+ *       - bearerAuth: []
+ *     x-roles:
+ *       - Usuario
+ *       - Administrador
+ */
+router.get("/listarPublicaciones/:id", listarPublicacionesID);
 
 /**
  * @swagger
  * /filtrarPorCurso:
  *   get:
  *     summary: Filtrar publicaciones por curso
- *     description: Devuelve las publicaciones relacionadas con un curso específico.
+ *     description: Obtiene publicaciones filtradas por el nombre del curso.
  *     tags:
  *       - Publicaciones
  *     parameters:
@@ -71,21 +112,26 @@ router.get("/listarPublicaciones", listarPublicaciones);
  *         required: true
  *         schema:
  *           type: string
- *         description: Nombre del curso para filtrar
+ *         description: Nombre del curso
  *     responses:
  *       200:
- *         description: Publicaciones filtradas exitosamente
+ *         description: Publicaciones filtradas por curso obtenidas exitosamente
  *       400:
  *         description: Parámetro de curso faltante o inválido
+ *     security:
+ *       - bearerAuth: []
+ *     x-roles:
+ *       - Usuario
+ *       - Administrador
  */
-router.get("/filtrarPorCurso", filtrarPorCurso);
+router.get('/filtrarPorCurso', filtrarPorCurso);
 
 /**
  * @swagger
  * /filtrarPorTitulo:
  *   get:
  *     summary: Filtrar publicaciones por título
- *     description: Devuelve las publicaciones que coinciden con un título específico.
+ *     description: Obtiene publicaciones filtradas por el título.
  *     tags:
  *       - Publicaciones
  *     parameters:
@@ -94,12 +140,17 @@ router.get("/filtrarPorCurso", filtrarPorCurso);
  *         required: true
  *         schema:
  *           type: string
- *         description: Título para filtrar
+ *         description: Título de la publicación
  *     responses:
  *       200:
- *         description: Publicaciones filtradas exitosamente
+ *         description: Publicaciones filtradas por título obtenidas exitosamente
  *       400:
  *         description: Parámetro de título faltante o inválido
+ *     security:
+ *       - bearerAuth: []
+ *     x-roles:
+ *       - Usuario
+ *       - Administrador
  */
 router.get("/filtrarPorTitulo", filtrarPorTitulo);
 
@@ -107,8 +158,8 @@ router.get("/filtrarPorTitulo", filtrarPorTitulo);
  * @swagger
  * /filtrarPorFechas:
  *   get:
- *     summary: Filtrar publicaciones por rango de fechas
- *     description: Devuelve las publicaciones dentro de un rango de fechas específico.
+ *     summary: Filtrar publicaciones por fechas
+ *     description: Obtiene publicaciones filtradas por un rango de fechas.
  *     tags:
  *       - Publicaciones
  *     parameters:
@@ -118,19 +169,24 @@ router.get("/filtrarPorTitulo", filtrarPorTitulo);
  *         schema:
  *           type: string
  *           format: date
- *         description: Fecha de inicio del rango (YYYY-MM-DD)
+ *         description: Fecha de inicio (YYYY-MM-DD)
  *       - in: query
  *         name: fechaFin
  *         required: true
  *         schema:
  *           type: string
  *           format: date
- *         description: Fecha de fin del rango (YYYY-MM-DD)
+ *         description: Fecha de fin (YYYY-MM-DD)
  *     responses:
  *       200:
- *         description: Publicaciones filtradas exitosamente
+ *         description: Publicaciones filtradas por fechas obtenidas exitosamente
  *       400:
- *         description: Parámetros de fecha faltantes o inválidos
+ *         description: Parámetros de fechas faltantes o inválidos
+ *     security:
+ *       - bearerAuth: []
+ *     x-roles:
+ *       - Usuario
+ *       - Administrador
  */
 router.get("/filtrarPorFechas", filtrarPorFechas);
 
